@@ -43,13 +43,13 @@ const App = ({ signOut }) => {
   async function createNote(event) {
     event.preventDefault();
     const form = new FormData(event.target);
-    // const image = form.get('image');
+    const image = form.get('image');
     const data = {
       name: form.get('name'),
       description: form.get('description'),
-      // image: image.name,
+      image: image.name,
     };
-    // if (!!data.image) await Storage.put(data.name, image);
+    if (!!data.image) await Storage.put(data.name, image);
     await API.graphql({
       query: createNoteMutation,
       variables: { input: data },
@@ -73,6 +73,7 @@ const App = ({ signOut }) => {
       <Heading level={1}>My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
+          <View name="image" as="input" type="file" style={{ alignSelf: 'end' }} />
           <TextField
             name="name"
             placeholder="Note Name"
@@ -94,7 +95,6 @@ const App = ({ signOut }) => {
           </Button>
         </Flex>
       </View>
-      <View name="image" as="input" type="file" style={{ alignSelf: 'end' }} />
       <Heading level={2}>Current Notes</Heading>
       <View margin="3rem 0">
         {notes.map((note) => (
